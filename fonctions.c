@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include "fonctions.h"
 
-int afficherFilm(){
-    return 0;
+void afficherFilm(){
 }
 
 void creerFilm(){
@@ -126,6 +125,7 @@ struct Personne* consulterRealisateur(){
 void save(struct Film *films, struct Personne *personnes, int nbFilms, int nbPersonnes){
     writeFilms(films, nbFilms);
     writePersonnes(personnes, nbPersonnes);
+    writeNbData(nbFilms, nbPersonnes);
 }
 
 
@@ -137,9 +137,9 @@ void save(struct Film *films, struct Personne *personnes, int nbFilms, int nbPer
  * @param personnes
  *      le tableau de personnes
  */
-void loadFile(struct Film *films, struct Personne *personnes){
-    loadFilms(films);
-    loadPersonnes(personnes);
+void loadFile(struct Film *films, struct Personne *personnes, int nbFilms, int nbPersonnes){
+    loadPersonnes(personnes, nbPersonnes);
+    loadFilms(films, nbFilms);
 }
 
 /**
@@ -148,16 +148,15 @@ void loadFile(struct Film *films, struct Personne *personnes){
  * @param nbFilms
  */
 void writeFilms(struct Film *films, int nbFilms){
-    for(int i = 0; i < nbFilms ; i++) {
-        FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt", "w");
-        if (f == NULL) {
-            printf("Error opening file!\n");
+    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt", "w+");
+    if (f == NULL) {
+        printf("Error opening file!\n");
+    } else{
+        for(int i = 0; i < nbFilms ; i++) {
+            fwrite(&films[i], sizeof(struct Film), 1, f);
         }
-
-        fwrite(&films[i], sizeof(films), 1, f);
-
-        fclose(f);
     }
+    fclose(f);
 }
 
 /**
@@ -166,16 +165,16 @@ void writeFilms(struct Film *films, int nbFilms){
  *          le tableau de personnes
  */
 void writePersonnes(struct Personne *personnes, int nbPersonnes){
-    for(int i = 0; i < nbPersonnes ; i++) {
-        FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt", "r");
-        if (f == NULL) {
-            printf("Error opening file!\n");
+
+    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt", "w+");
+    if (f == NULL) {
+        printf("Error opening file!\n");
+    } else{
+        for(int i = 0; i < nbPersonnes ; i++) {
+            fwrite(&personnes[i], sizeof(struct Personne), 1, f);
         }
-
-        fwrite(&personnes[i], sizeof(personnes), 1, f);
-
-        fclose(f);
     }
+    fclose(f);
 }
 
 /**
@@ -183,21 +182,22 @@ void writePersonnes(struct Personne *personnes, int nbPersonnes){
  * @param films
  *      le tableau de films
  */
-void loadFilms(struct Film *films){
-    for(int i = 0; i < 100 ; i++) {
-        FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt", "r");
-        if (f == NULL) {
-            printf("Error opening Films file!\n");
-        }
+void loadFilms(struct Film *films, int nbFilms){
+    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt", "r+");
+    if (f == NULL) {
+        printf("Error opening Films file!\n");
+    }
 
+    for(int i = 0; i < nbFilms; i++){
         fread(&films[i], sizeof(films), 1, f );
         printf("titre:%s\n", films[i].titre);
         printf("annee de sortie:%d\n", films[i].anneeDeSortie);
-        printf("realisateurs:%p\n", films[i].realisateur);
-        printf("acteurs:%p\n", films[i].acteur);
-
-        fclose(f);
+        printf("realisateur:%s\n", films[i].realisateur->prenom);
+        printf("acteurs:%s, ", films[i].acteur[0]->prenom);
+        printf("%s\n\n", films[i].acteur[1]->prenom);
     }
+
+    fclose(f);
 }
 
 /**
@@ -205,19 +205,45 @@ void loadFilms(struct Film *films){
  * @param personnes
  *      le tableau de personnes
  */
-void loadPersonnes(struct Personne *personnes){
-    for(int i = 0; i < 100 ; i++) {
-        FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt", "r");
-        if (f == NULL) {
-            printf("Error opening Personnes file!\n");
-        }
+void loadPersonnes(struct Personne *personnes, int nbPersonnes){
+    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt", "r+");
+    if (f == NULL) {
+        printf("Error opening Personnes file!\n");
+    }
 
+    for(int i = 0; i < nbPersonnes; i++){
         fread(&personnes[i], sizeof(personnes), 1, f );
+
         printf("nom:%s\n", personnes[i].nom);
         printf("prenom:%s\n", personnes[i].prenom);
         printf("date de naissance:%d\n", personnes[i].dateDeNaissance);
-        printf("nationalité:%s\n", personnes[i].nationalite);
-
-        fclose(f);
+        printf("nationalité:%s\n\n", personnes[i].nationalite);
     }
+
+    fclose(f);
+    printf("\n\n");
+}
+
+void loadNbData(int *nbFilms, int *nbPersonnes){
+    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/nbData.txt", "r+");
+    if (f == NULL) {
+        printf("Error opening Personnes file!\n");
+    } else{
+        fread(nbFilms, sizeof(int), 1, f );
+        fread(nbPersonnes, sizeof(int), 1, f );
+    }
+
+    fclose(f);
+}
+
+
+void writeNbData(int nbFilms, int nbPersonnes){
+    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/nbData.txt", "w+");
+    if (f == NULL) {
+        printf("Error opening file!\n");
+    } else{
+        fwrite(&nbFilms, sizeof(int), 1, f);
+        fwrite(&nbPersonnes, sizeof(int), 1, f);
+    }
+    fclose(f);
 }

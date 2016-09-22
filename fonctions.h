@@ -29,11 +29,13 @@ typedef struct Personne{
 
 void writeFilms(struct Film *films, int nbFilms);
 void writePersonnes(struct Personne *personnes, int nbPersonnes);
-void loadFilms(struct Film *films);
-void loadPersonnes(struct Personne *personnes);
+void loadFilms(struct Film *films, int nbFilms);
+void loadPersonnes(struct Personne *personnes, int nbPersonnes);
 void save(struct Film *films, struct Personne *personnes, int nbFilms, int nbPersonnes);
-void loadFile(struct Film *films, struct Personne *personnes);
+void loadFile(struct Film *films, struct Personne *personnes, int nbFilms, int nbPersonnes);
 
+void creerFilm();
+void afficherFilm();
 void afficheFilmParActeur();
 void afficheFilmParRealisateur();
 void supprimeFilm();
@@ -42,3 +44,6 @@ struct Personne* creerActeur();
 struct Personne* consulterActeur();
 struct Personne* consulterRealisateur();
 struct Personne* creerRealisateur();
+
+void loadNbData(int *nbFilms, int *nbPersonnes);
+void writeNbData(int nbFilms, int nbPersonnes);
