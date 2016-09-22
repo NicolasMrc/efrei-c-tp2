@@ -11,7 +11,7 @@ typedef enum Genre {
 } Genre;
 
 typedef struct Film{
-    char* titre;
+    char titre[25];
     int anneeDeSortie;
     struct Personne *realisateur;
     struct Personne *acteur[3];
@@ -35,8 +35,9 @@ void save(struct Film *films, struct Personne *personnes, int nbFilms, int nbPer
 void loadFile(struct Film *films, struct Personne *personnes, int nbFilms, int nbPersonnes);
 
 void creerFilm();
-void afficherFilm();
-void afficheFilmParActeur();
+void afficherFilm(struct Film*,int);
+void afficherActeurs(struct Personne*, int);
+void afficheFilmParActeur(struct Film*,struct Personne*, int,int );
 void afficheFilmParRealisateur();
 void supprimeFilm();
 enum Genre choixGenre();

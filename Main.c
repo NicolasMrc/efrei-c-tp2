@@ -1,5 +1,4 @@
 #include "fonctions.h"
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -10,9 +9,9 @@ int main() {
     struct Film film;
     struct Personne personne;
 
-    int nbFilms = 1, nbPersonnes = 2;
+    int nbFilms, nbPersonnes;
 
-    //loadNbData(&nbFilms, &nbPersonnes);
+    loadNbData(&nbFilms, &nbPersonnes);
 
     strcpy(personne.prenom, "Zora");
     strcpy(personne.nom, "Explorer");
@@ -60,18 +59,25 @@ int main() {
             scanf("%d", &choix2);
             switch (choix2){
                 case 1:
-                    afficherFilm();
+                    afficherFilm(films,nbFilms);
+                    break;
                 case 2:
-                    afficheFilmParActeur();
+                    afficheFilmParActeur(films,personnes,nbFilms,nbPersonnes);
+                    break;
                 case 3:
                     afficheFilmParRealisateur();
                 default:
                     break;
+
+
             }
+            break;
         case 2:
             creerFilm();
+            break;
         case 3:
             supprimeFilm();
+            break;
         default:
             break;
     }

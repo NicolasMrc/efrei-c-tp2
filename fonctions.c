@@ -2,10 +2,33 @@
 #include <string.h>
 #include <stdlib.h>
 #include "fonctions.h"
+/*
+char fileFilm ="/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt";
+char filePersonne="/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt";
+char fileData="/Users/Nico/Desktop/EFREI/C C++/TP2/nbData.txt";
+*/
+char fileFilm[] ="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\films.txt";
+char filePersonne[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\personnes.txt";
+char fileData[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\nbData.txt";
+void afficherFilm(struct Film *films, int nbFilms){
+    for(int i = 0; i < nbFilms; i++) {
+        printf("titre:%s\n", films[i].titre);
+        printf("annee de sortie:%d\n", films[i].anneeDeSortie);
+        printf("realisateur:%s\n", films[i].realisateur->prenom);
+        printf("acteurs:%s, ", films[i].acteur[0]->prenom);
+        printf("%s\n\n", films[i].acteur[1]->prenom);
+    }
 
-void afficherFilm(){
 }
-
+void afficherActeurs(struct Personne *personnes, int nbPersonnes){// A modifier pour le choix
+    for(int i = 0; i < nbPersonnes; i++){
+        printf("Acteur [%d]\n",i+1);
+        printf("nom: %s - ", personnes[i].nom);
+        printf("prenom: %s - ", personnes[i].prenom);
+        printf("date de naissance: %d - ", personnes[i].dateDeNaissance);
+        printf("nationalite: %s\n", personnes[i].nationalite);
+    }
+}
 void creerFilm(){
     struct Film newFilm;
     char titre[30];
@@ -62,23 +85,19 @@ void creerFilm(){
     newFilm.genre=choixGenre();
     printf("Film créer avec succès");
 }
-
-void afficheFilmParActeur(){
-
+void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbFilm, int nbPersonnes){
+    printf("Quelle acteurs veut tu voir?\n");
+    afficherActeurs(personnes,nbPersonnes);
 }
-
 void afficheFilmParRealisateur(){
 
 }
-
 void supprimeFilm(){
 
 }
-
 enum Genre choixGenre(){
     return Action;
 }
-
 struct Personne* creerActeur(){
     struct Personne *newActeur = malloc(sizeof(Personne));
     newActeur->dateDeNaissance = 2;
@@ -87,7 +106,6 @@ struct Personne* creerActeur(){
     strcpy(newActeur->prenom, "Chuck");
     return newActeur;
 }
-
 struct Personne* consulterActeur(){
     struct Personne *newActeur = malloc(sizeof(Personne));
     newActeur->dateDeNaissance = 2;
@@ -96,7 +114,6 @@ struct Personne* consulterActeur(){
     strcpy(newActeur->prenom, "Chuck");
     return newActeur;
 }
-
 struct Personne* creerRealisateur(){
     struct Personne *newActeur = malloc(sizeof(Personne));
     newActeur->dateDeNaissance = 2;
@@ -105,7 +122,6 @@ struct Personne* creerRealisateur(){
     strcpy(newActeur->prenom, "Chuck");
     return newActeur;
 }
-
 struct Personne* consulterRealisateur(){
     struct Personne *newActeur = malloc(sizeof(Personne));
     newActeur->dateDeNaissance = 2;
@@ -114,7 +130,6 @@ struct Personne* consulterRealisateur(){
     strcpy(newActeur->prenom, "Chuck");
     return newActeur;
 }
-
 /**
  * Methode permettant de sauvegarder les films et les personnes dans des fichiers text
  * @param films
@@ -127,8 +142,6 @@ void save(struct Film *films, struct Personne *personnes, int nbFilms, int nbPer
     writePersonnes(personnes, nbPersonnes);
     writeNbData(nbFilms, nbPersonnes);
 }
-
-
 /**
  * methode permettant d'initialiser les tableaux de films et de personnes avec les
  * données contenues dans les fichier text
@@ -141,14 +154,13 @@ void loadFile(struct Film *films, struct Personne *personnes, int nbFilms, int n
     loadPersonnes(personnes, nbPersonnes);
     loadFilms(films, nbFilms);
 }
-
 /**
  * Permet de sauvegarder dans un fichier films.txt les films du tableaux
  * @param films
  * @param nbFilms
  */
 void writeFilms(struct Film *films, int nbFilms){
-    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt", "w+");
+    FILE *f = fopen(fileFilm, "w+");
     if (f == NULL) {
         printf("Error opening file!\n");
     } else{
@@ -158,7 +170,6 @@ void writeFilms(struct Film *films, int nbFilms){
     }
     fclose(f);
 }
-
 /**
  * methode permettant d'ecrire dans le fichier personnes.txt la liste des personnes
  * @param personnes
@@ -166,7 +177,7 @@ void writeFilms(struct Film *films, int nbFilms){
  */
 void writePersonnes(struct Personne *personnes, int nbPersonnes){
 
-    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt", "w+");
+    FILE *f = fopen(filePersonne, "w+");
     if (f == NULL) {
         printf("Error opening file!\n");
     } else{
@@ -176,56 +187,45 @@ void writePersonnes(struct Personne *personnes, int nbPersonnes){
     }
     fclose(f);
 }
-
 /**
  * Methode permettant de charger la liste de films d'apres le fichier fimls.txt
  * @param films
  *      le tableau de films
  */
 void loadFilms(struct Film *films, int nbFilms){
-    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt", "r+");
+    FILE *f = fopen(fileFilm, "r+");
     if (f == NULL) {
         printf("Error opening Films file!\n");
     }
 
     for(int i = 0; i < nbFilms; i++){
         fread(&films[i], sizeof(films), 1, f );
-        printf("titre:%s\n", films[i].titre);
-        printf("annee de sortie:%d\n", films[i].anneeDeSortie);
-        printf("realisateur:%s\n", films[i].realisateur->prenom);
-        printf("acteurs:%s, ", films[i].acteur[0]->prenom);
-        printf("%s\n\n", films[i].acteur[1]->prenom);
     }
+    //afficherFilm(films, nbFilms);
 
     fclose(f);
 }
-
 /**
  * methode permettant de charge la liste de personnes enregistrées dans le fichier personnes.txt
  * @param personnes
  *      le tableau de personnes
  */
 void loadPersonnes(struct Personne *personnes, int nbPersonnes){
-    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt", "r+");
+    FILE *f = fopen(filePersonne, "r+");
     if (f == NULL) {
         printf("Error opening Personnes file!\n");
     }
 
     for(int i = 0; i < nbPersonnes; i++){
         fread(&personnes[i], sizeof(personnes), 1, f );
-
-        printf("nom:%s\n", personnes[i].nom);
-        printf("prenom:%s\n", personnes[i].prenom);
-        printf("date de naissance:%d\n", personnes[i].dateDeNaissance);
-        printf("nationalité:%s\n\n", personnes[i].nationalite);
     }
+    //afficherActeur(personnes, nbPersonnes);
 
     fclose(f);
     printf("\n\n");
 }
-
-void loadNbData(int *nbFilms, int *nbPersonnes){
-    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/nbData.txt", "r+");
+void loadNbData(int *nbPersonnes, int *nbFilms){
+    FILE *f = fopen(fileData, "r+");
     if (f == NULL) {
         printf("Error opening Personnes file!\n");
     } else{
@@ -235,10 +235,8 @@ void loadNbData(int *nbFilms, int *nbPersonnes){
 
     fclose(f);
 }
-
-
 void writeNbData(int nbFilms, int nbPersonnes){
-    FILE *f = fopen("/Users/Nico/Desktop/EFREI/C C++/TP2/nbData.txt", "w+");
+    FILE *f = fopen(fileData, "w+");
     if (f == NULL) {
         printf("Error opening file!\n");
     } else{
