@@ -1,7 +1,9 @@
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <libintl.h>
+#include <string.h>
 #include "fonctions.h"
+#include <stdio.h>
 /*
 char fileFilm ="/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt";
 char filePersonne="/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt";
@@ -10,15 +12,19 @@ char fileData="/Users/Nico/Desktop/EFREI/C C++/TP2/nbData.txt";
 char fileFilm[] ="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\films.txt";
 char filePersonne[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\personnes.txt";
 char fileData[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\nbData.txt";
-void afficherFilm(struct Film *films, int nbFilms){
-    for(int i = 0; i < nbFilms; i++) {
-        printf("titre:%s\n", films[i].titre);
-        printf("annee de sortie:%d\n", films[i].anneeDeSortie);
-        printf("realisateur:%s\n", films[i].realisateur->prenom);
-        printf("acteurs:%s, ", films[i].acteur[0]->prenom);
-        printf("%s\n\n", films[i].acteur[1]->prenom);
-    }
 
+void afficherFilms(struct Film *films, int nbFilms){
+    for(int i = 0; i < nbFilms; i++) {
+        afficherFilm(films[i]);
+    }
+}
+void afficherFilm(struct Film films){
+    printf("lol");
+    printf("titre:%s\n", films.titre);
+    printf("annee de sortie:%d\n", films.anneeDeSortie);
+    printf("realisateur:%s\n", films.realisateur->prenom);
+    printf("acteurs:%s, ", films.acteur[0]->prenom);
+    printf("%s\n\n", films.acteur[1]->prenom);
 }
 void afficherActeurs(struct Personne *personnes, int nbPersonnes){// A modifier pour le choix
     for(int i = 0; i < nbPersonnes; i++){
@@ -85,9 +91,23 @@ void creerFilm(){
     newFilm.genre=choixGenre();
     printf("Film créer avec succès");
 }
-void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbFilm, int nbPersonnes){
+void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbFilms, int nbPersonnes){
     printf("Quelle acteurs veut tu voir?\n");
+    int choixActeur;
     afficherActeurs(personnes,nbPersonnes);
+    scanf("%d",&choixActeur);
+    for(int i = 0; i < nbFilms; i++) {
+        for (int j = 0; j <2 ; ++j) {
+            if (strcmp(personnes[choixActeur].nom, films[i].acteur[j]->nom)) {
+                printf("titre:%s\n", films[i].titre);
+                printf("annee de sortie:%d\n", films[i].anneeDeSortie);
+                printf("realisateur:%s\n", films[i].realisateur->prenom);
+                printf("acteurs:%s, ", films[i].acteur[0]->prenom);
+                printf("%s\n\n", films[i].acteur[1]->prenom);
+            }
+        }
+    }
+
 }
 void afficheFilmParRealisateur(){
 
@@ -201,7 +221,7 @@ void loadFilms(struct Film *films, int nbFilms){
     for(int i = 0; i < nbFilms; i++){
         fread(&films[i], sizeof(films), 1, f );
     }
-    //afficherFilm(films, nbFilms);
+    //afficherFilms(films, nbFilms);
 
     fclose(f);
 }

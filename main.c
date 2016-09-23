@@ -5,14 +5,13 @@
 int main() {
     struct Film films[100];
     struct Personne personnes[100];
-
-    struct Film film;
-    struct Personne personne;
-
     int nbFilms, nbPersonnes;
 
     loadNbData(&nbFilms, &nbPersonnes);
 
+    /*
+    struct Film film;
+    struct Personne personne;
     strcpy(personne.prenom, "Zora");
     strcpy(personne.nom, "Explorer");
     strcpy(personne.nationalite, "Francais");
@@ -37,11 +36,9 @@ int main() {
     films[0] = film;
     personnes[0] = personne;
     personnes[1] = personne2;
-
+    */
     loadFile(films, personnes, nbFilms, nbPersonnes);
     //save(films, personnes, nbFilms, nbPersonnes);
-
-
 
     printf("Welcome\n");//Bienvenue
     int choix;
@@ -59,17 +56,13 @@ int main() {
             scanf("%d", &choix2);
             switch (choix2){
                 case 1:
-                    afficherFilm(films,nbFilms);
+                    afficherFilms(films,nbFilms);
                     break;
                 case 2:
                     afficheFilmParActeur(films,personnes,nbFilms,nbPersonnes);
                     break;
-                case 3:
-                    afficheFilmParRealisateur();
                 default:
                     break;
-
-
             }
             break;
         case 2:

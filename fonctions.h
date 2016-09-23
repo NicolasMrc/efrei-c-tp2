@@ -33,12 +33,11 @@ void loadFilms(struct Film *films, int nbFilms);
 void loadPersonnes(struct Personne *personnes, int nbPersonnes);
 void save(struct Film *films, struct Personne *personnes, int nbFilms, int nbPersonnes);
 void loadFile(struct Film *films, struct Personne *personnes, int nbFilms, int nbPersonnes);
-
+void afficherFilm(struct Film);
 void creerFilm();
-void afficherFilm(struct Film*,int);
+void afficherFilms(struct Film*,int);
 void afficherActeurs(struct Personne*, int);
 void afficheFilmParActeur(struct Film*,struct Personne*, int,int );
-void afficheFilmParRealisateur();
 void supprimeFilm();
 enum Genre choixGenre();
 struct Personne* creerActeur();
