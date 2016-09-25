@@ -1,6 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
-#include <libintl.h>
+//#include <libintl.h>
 #include <string.h>
 #include "fonctions.h"
 #include <stdio.h>
@@ -19,14 +19,13 @@ void afficherFilms(struct Film *films, int nbFilms){
     }
 }
 void afficherFilm(struct Film films){
-    printf("lol");
     printf("titre:%s\n", films.titre);
     printf("annee de sortie:%d\n", films.anneeDeSortie);
     printf("realisateur:%s\n", films.realisateur->prenom);
     printf("acteurs:%s, ", films.acteur[0]->prenom);
     printf("%s\n\n", films.acteur[1]->prenom);
 }
-void afficherActeurs(struct Personne *personnes, int nbPersonnes){// A modifier pour le choix
+void afficherActeurs(struct Personne *personnes, int nbPersonnes){
     for(int i = 0; i < nbPersonnes; i++){
         printf("Acteur [%d]\n",i+1);
         printf("nom: %s - ", personnes[i].nom);
@@ -96,6 +95,7 @@ void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbF
     int choixActeur;
     afficherActeurs(personnes,nbPersonnes);
     scanf("%d",&choixActeur);
+    fflush(stdin);
     for(int i = 0; i < nbFilms; i++) {
         for (int j = 0; j <2 ; ++j) {
             if (strcmp(personnes[choixActeur].nom, films[i].acteur[j]->nom)) {
@@ -107,9 +107,6 @@ void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbF
             }
         }
     }
-
-}
-void afficheFilmParRealisateur(){
 
 }
 void supprimeFilm(){
@@ -219,7 +216,7 @@ void loadFilms(struct Film *films, int nbFilms){
     }
 
     for(int i = 0; i < nbFilms; i++){
-        fread(&films[i], sizeof(films), 1, f );
+        fread(&films[i], sizeof(struct Film), 1, f );
     }
     //afficherFilms(films, nbFilms);
 
@@ -237,14 +234,14 @@ void loadPersonnes(struct Personne *personnes, int nbPersonnes){
     }
 
     for(int i = 0; i < nbPersonnes; i++){
-        fread(&personnes[i], sizeof(personnes), 1, f );
+        fread(&personnes[i], sizeof(struct Personne), 1, f );
     }
-    //afficherActeur(personnes, nbPersonnes);
+    //afficherActeurs(personnes, nbPersonnes);
 
     fclose(f);
     printf("\n\n");
 }
-void loadNbData(int *nbPersonnes, int *nbFilms){
+void loadNbData(int *nbFilms, int *nbPersonnes){
     FILE *f = fopen(fileData, "r+");
     if (f == NULL) {
         printf("Error opening Personnes file!\n");
