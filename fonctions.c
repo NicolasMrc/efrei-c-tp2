@@ -40,10 +40,9 @@ void creerFilm(struct Personne *personnes, int nbPersonnes, struct Film *films, 
     int nbActeur;
     struct Personne acteur[3];
     int duree;
-    enum Genre genre;
     int choixRealisateur;
     int choixActeur;
-
+    printf("nbFilm %d nbPersonne %d\n",nbFilms,nbPersonnes);
     printf("Interface de creation de film\n"
                    "-------------------------------------------------\n"
                    "1-Quel est son titre?\n");
@@ -61,28 +60,34 @@ void creerFilm(struct Personne *personnes, int nbPersonnes, struct Film *films, 
             newFilm.realisateur=creerRealisateur();
             personnes[nbActeur]=newFilm.realisateur;
             nbPersonnes++;
+            break;
         case 2:
             newFilm.realisateur = consulterRealisateur(personnes, nbPersonnes);
+            break;
         default:
             break;
     }
+    printf("nbFilm %d nbPersonne %d\n",nbFilms,nbPersonnes);
     printf("Combien d'acteurs y a-t-il:\n");
     scanf("%d",&nbActeur);
 
     for (int i = 0; i < nbActeur ; i++) {
         printf("Nb D'acteur %d  -- - I = %d\n",nbActeur,i);
         printf("Qui est le %d acteur\n"
-                       "1-Choisir parmi la liste\n"
-                       "2-Creer un acteur\n",i+1);
+                       "1-Creer un acteur\n"
+                       "2-Consulter la liste des acteurs\n",i+1);
         scanf("%d",&choixActeur);
         fflush(stdin);
         switch (choixActeur){
             case 1 :
-                newFilm.acteur[i]=consulterActeur(personnes,nbPersonnes);
-            case 2:
                 newFilm.acteur[i]=creerActeur();
                 personnes[nbActeur] = newFilm.acteur[i];
                 nbPersonnes++;
+                break;
+            case 2:
+                newFilm.acteur[i]=consulterActeur(personnes,nbPersonnes);
+                break;
+
             default:
                 break;
         }
@@ -94,9 +99,9 @@ void creerFilm(struct Personne *personnes, int nbPersonnes, struct Film *films, 
     newFilm.genre=choixGenre();
     nbFilms++;
     films[nbFilms]= newFilm;
-    save(films, personnes, nbFilms, nbActeur);
+    save(films, personnes, nbFilms, nbActeur);// Sauvegarde ne remonte pas
     afficherFilm(newFilm);
-    printf("Film créer avec succès");
+    printf("\nFilm créer avec succès\n");
 }
 void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbFilms, int nbPersonnes){
     printf("Quelle acteurs veut tu voir?\n");
@@ -120,9 +125,16 @@ void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbF
 void supprimeFilm(){
 
 }
-enum Genre choixGenre(){
-
-    return Action;
+char choixGenre(){
+    int i=0;
+    printf("Quel genre?");
+while(listGenre[i]!="0"){
+    printf("%d - %s ",i+1,listGenre[i]);
+    i++;
+}
+ int choix;
+    scanf("%d",choix);
+    return listGenre[choix];
 }
 struct Personne creerActeur(){
     struct Personne newActeur;
