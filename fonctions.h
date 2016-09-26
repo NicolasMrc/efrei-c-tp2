@@ -1,4 +1,3 @@
-
 static char *listGenre[] = {
         "Horreur",
         "Comedie",
@@ -19,6 +18,7 @@ typedef struct Film{
     char titre[25];
     int anneeDeSortie;
     struct Personne realisateur;
+    int nbActeur;
     struct Personne acteur[3];
     int duree;
     char genre;
@@ -28,7 +28,7 @@ typedef struct Film{
 
 
 void writeFilms(struct Film *films, int nbFilms);
-void writePersonnes(struct Personne *personnes, int nbPersonnes);
+void writePersonnes(struct Personne *personnes, int nbPersonnes );
 void loadFilms(struct Film *films, int nbFilms);
 void loadPersonnes(struct Personne *personnes, int nbPersonnes);
 void save(struct Film *films, struct Personne *personnes, int nbFilms, int nbPersonnes);
@@ -38,8 +38,9 @@ void creerFilm(struct Personne*, int, struct Film*, int);
 void afficherFilms(struct Film*,int);
 void afficherActeurs(struct Personne*, int);
 void afficheFilmParActeur(struct Film*,struct Personne*, int,int );
-void supprimeFilm();
-char choixGenre();
+void afficheFilmParRealisateur(struct Film*,struct Personne*, int,int );
+void supprimeFilm(struct Film *films, int nbFilms, int);
+char* choixGenre();
 struct Personne creerActeur();
 struct Personne consulterActeur(struct Personne*, int);
 struct Personne consulterRealisateur(struct Personne*, int);

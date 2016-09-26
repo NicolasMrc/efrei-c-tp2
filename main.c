@@ -43,7 +43,7 @@ int main() {
     loadFile(films, personnes, nbFilms, nbPersonnes);
     //save(films, personnes, nbFilms, nbPersonnes);
 
-    printf("nbFilm %d nbPersonne %d\n",nbFilms,nbPersonnes);
+    printf("Nombre de Film %d Nombre de Personne %d\n",nbFilms,nbPersonnes);
     printf("Welcome\n");//Bienvenue
     int choix;
     printf("1-Consulter un film\n"
@@ -54,7 +54,8 @@ int main() {
     switch(choix){
         case 1:
             printf("1-Consulter tous les films\n"
-                           "2-Consulter les films d'un acteur\n");
+                           "2-Consulter les films d'un acteur\n"
+                           "3-Consulter les fils d'un realisateur\n");
             int choix2;
             scanf("%d", &choix2);
             switch (choix2){
@@ -64,6 +65,8 @@ int main() {
                 case 2:
                     afficheFilmParActeur(films,personnes,nbFilms,nbPersonnes);
                     break;
+                case 3:
+                    afficheFilmParRealisateur(films,personnes,nbFilms,nbPersonnes);
                 default:
                     break;
             }
@@ -73,8 +76,19 @@ int main() {
             afficherFilms(films, nbFilms);
             break;
         case 3:
-            supprimeFilm();
+            supprimeFilm(films, nbFilms, nbPersonnes);
             break;
+        default:
+            break;
+    }
+    int restart;
+    printf("\nSouhaitez vous réalisé une autre commande ?\n"
+                   "1-Oui\n"
+                   "2-Non\n");
+    scanf("%d",&restart);
+    switch (restart){
+        case 1:
+            main();
         default:
             break;
     }

@@ -13,6 +13,7 @@ char fileData[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\nbData.txt";
 
 void afficherFilms(struct Film *films, int nbFilms){
     for(int i = 0; i < nbFilms; i++) {
+        printf("Film [%d]\n",i+1);
         afficherFilm(films[i]);
     }
 }
@@ -20,8 +21,13 @@ void afficherFilm(struct Film films){
     printf("titre:%s\n", films.titre);
     printf("annee de sortie:%d\n", films.anneeDeSortie);
     printf("realisateur:%s\n", films.realisateur.prenom);
-    printf("acteurs:%s, ", films.acteur[0].prenom);
-    printf("%s\n\n", films.acteur[1].prenom);
+
+    for (int i = 0; i <films.nbActeur ; ++i) {
+        printf("acteurs:%s ", films.acteur[i].prenom);
+    }
+    printf("duree %s min: ",films.duree);
+
+
 }
 void afficherActeurs(struct Personne *personnes, int nbPersonnes){
     for(int i = 0; i < nbPersonnes; i++){
@@ -58,7 +64,7 @@ void creerFilm(struct Personne *personnes, int nbPersonnes, struct Film *films, 
     switch (choixRealisateur){
         case 1:
             newFilm.realisateur=creerRealisateur();
-            personnes[nbActeur]=newFilm.realisateur;
+            personnes[nbPersonnes]=newFilm.realisateur;
             nbPersonnes++;
             break;
         case 2:
@@ -70,9 +76,8 @@ void creerFilm(struct Personne *personnes, int nbPersonnes, struct Film *films, 
     printf("nbFilm %d nbPersonne %d\n",nbFilms,nbPersonnes);
     printf("Combien d'acteurs y a-t-il:\n");
     scanf("%d",&nbActeur);
-
+    newFilm.nbActeur=nbActeur;
     for (int i = 0; i < nbActeur ; i++) {
-        printf("Nb D'acteur %d  -- - I = %d\n",nbActeur,i);
         printf("Qui est le %d acteur\n"
                        "1-Creer un acteur\n"
                        "2-Consulter la liste des acteurs\n",i+1);
@@ -81,7 +86,7 @@ void creerFilm(struct Personne *personnes, int nbPersonnes, struct Film *films, 
         switch (choixActeur){
             case 1 :
                 newFilm.acteur[i]=creerActeur();
-                personnes[nbActeur] = newFilm.acteur[i];
+                personnes[nbPersonnes] = newFilm.acteur[i];
                 nbPersonnes++;
                 break;
             case 2:
@@ -97,51 +102,86 @@ void creerFilm(struct Personne *personnes, int nbPersonnes, struct Film *films, 
     newFilm.duree=duree;
     printf("Quel est le genre de ce film?\n");
     newFilm.genre=choixGenre();
-    nbFilms++;
+
     films[nbFilms]= newFilm;
-    save(films, personnes, nbFilms, nbActeur);// Sauvegarde ne remonte pas
+    nbFilms++;
+    save(films, personnes, nbFilms, nbPersonnes);// Sauvegarde ne remonte pas
     afficherFilm(newFilm);
     printf("\nFilm créer avec succès\n");
 }
 void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbFilms, int nbPersonnes){
-    printf("Quelle acteurs veut tu voir?\n");
+    printf("Quel acteur veut tu voir?\n");
     int choixActeur;
     afficherActeurs(personnes,nbPersonnes);
     scanf("%d",&choixActeur);
     fflush(stdin);
     for(int i = 0; i < nbFilms; i++) {
-        for (int j = 0; j <2 ; ++j) {
-            if (strcmp(personnes[choixActeur].nom, films[i].acteur[j].nom)) {//Ne fonctionne pas du au pb des acteurs dans film
-                printf("titre:%s\n", films[i].titre);
-                printf("annee de sortie:%d\n", films[i].anneeDeSortie);
-                printf("realisateur:%s\n", films[i].realisateur.prenom);
-                printf("acteurs:%s, ", films[i].acteur[0].prenom);
-                printf("%s\n\n", films[i].acteur[1].prenom);
+        for (int j = 0; j <films[i].nbActeur ; ++j) {
+            if (strcmp(personnes[choixActeur-1].nom, films[i].acteur[j].nom)==0) {//Ne fonctionne pas du au pb des acteurs dans film
+                afficherFilm(films[i]);
+            }
+            else{
+                printf("Pas de film de cette acteur");
             }
         }
     }
-
 }
-void supprimeFilm(){
+void afficheFilmParRealisateur(struct Film *films,struct Personne *personnes, int nbFilms, int nbPersonnes){
+    printf("Quel realisateur veut tu voir?\n");
+    int choixActeur;
+    afficherActeurs(personnes,nbPersonnes);
+    scanf("%d",&choixActeur);
+    fflush(stdin);
+    for(int i = 0; i < nbFilms; i++) {
+            if (strcmp(personnes[choixActeur-1].nom, films[i].realisateur.nom)==0) {//Ne fonctionne pas du au pb des acteurs dans film
+                afficherFilm(films[i]);
+            }
+            else{
+                printf("Pas de film de ce realisateur");
+            }
 
+    }
 }
-char choixGenre(){
+void supprimeFilm(struct Film *films, int nbFilms, int nbPersonnes){
+
+printf("Quel film voulez vous supprimer?\n");
+    afficherFilms(films,nbFilms);
+    int choix;
+    scanf("%d",&choix);
+    films[choix-1]=films[nbFilms];
+
+    nbFilms--;
+    writeFilms(films,nbFilms);
+    writeNbData(nbFilms,nbPersonnes);
+}
+char* choixGenre(){
     int i=0;
-    printf("Quel genre?");
+    printf("Quel genre?\n");
 while(listGenre[i]!="0"){
     printf("%d - %s ",i+1,listGenre[i]);
     i++;
 }
  int choix;
-    scanf("%d",choix);
-    return listGenre[choix];
+    scanf("%d",&choix);
+    fflush(stdin);
+    printf("Genre %s \n",listGenre[choix-1]);
+    return listGenre[choix-1];
 }
 struct Personne creerActeur(){
     struct Personne newActeur;
-    newActeur.dateDeNaissance = 2;
-    strcpy(newActeur.nationalite, "fr");
-    strcpy(newActeur.nom, "Norris");
-    strcpy(newActeur.prenom, "Chuck");
+    int dateDeNais; char natio[15],nom[15],prenom[15];
+    printf("Nom de l'acteur?\n");
+    scanf("%s",nom);fflush(stdin);
+    printf("Prenom de l'acteur?\n");
+    scanf("%s",prenom);fflush(stdin);
+    printf("Nationalité de l'acteur?\n");
+    scanf("%s",natio);fflush(stdin);
+    printf("Date de naissance?\n");
+    scanf("%d",&dateDeNais);fflush(stdin);
+    newActeur.dateDeNaissance = dateDeNais;
+    strcpy(newActeur.nationalite, natio);
+    strcpy(newActeur.nom, nom);
+    strcpy(newActeur.prenom, prenom);
     return newActeur;
 }
 struct Personne consulterActeur(struct Personne *personnes, int nbPersonnes){
@@ -149,14 +189,23 @@ struct Personne consulterActeur(struct Personne *personnes, int nbPersonnes){
     printf("Qui est l'acteur?");
     int choixReal;
     scanf("%d",&choixReal);
-    return personnes[choixReal];
+    return personnes[choixReal-1];
 }
 struct Personne creerRealisateur(){
     struct Personne newActeur;
-    newActeur.dateDeNaissance = 2;
-    strcpy(newActeur.nationalite, "fr");
-    strcpy(newActeur.nom, "Norris");
-    strcpy(newActeur.prenom, "Chuck");
+    int dateDeNais; char natio[15],nom[15],prenom[15];
+    printf("Nom du realisateur\n");
+    scanf("%s",nom);fflush(stdin);
+    printf("Prenom du realisateur?\n");
+    scanf("%s",prenom);fflush(stdin);
+    printf("Nationalité du realisateur?\n");
+    scanf("%s",natio);fflush(stdin);
+    printf("Date de naissance?\n");
+    scanf("%d",&dateDeNais);fflush(stdin);
+    newActeur.dateDeNaissance = dateDeNais;
+    strcpy(newActeur.nationalite, natio);
+    strcpy(newActeur.nom, nom);
+    strcpy(newActeur.prenom, prenom);
     return newActeur;
 }
 struct Personne consulterRealisateur(struct Personne *personnes, int nbPersonnes){
@@ -164,7 +213,7 @@ struct Personne consulterRealisateur(struct Personne *personnes, int nbPersonnes
     printf("Qui est le réalisateur?");
     int choixReal;
     scanf("%d",&choixReal);
-    return personnes[choixReal];
+    return personnes[choixReal-1];
 }
 /**
  * Methode permettant de sauvegarder les films et les personnes dans des fichiers text
