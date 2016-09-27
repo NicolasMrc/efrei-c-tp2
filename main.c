@@ -5,50 +5,32 @@
 int main() {
     struct Film films[100];
     struct Personne personnes[100];
-    int nbFilms=0, nbPersonnes=0;
+    int nbFilms, nbPersonnes;
 
-/*
-    struct Film film;
-    struct Personne personne;
-    strcpy(personne.prenom, "Zora");
-    strcpy(personne.nom, "Explorer");
-    strcpy(personne.nationalite, "Francais");
-    personne.dateDeNaissance = 1995;
-
-    struct Personne personne2;
-
-    strcpy(personne2.prenom, "Nico");
-    strcpy(personne2.nom, "Mrc");
-    strcpy(personne2.nationalite, "Francais");
-    personne2.dateDeNaissance = 1995;
-
-
-    film.acteur[0] = personne2;
-    film.acteur[1] = personne;
-    film.anneeDeSortie = 2016;
-    film.duree = 122;
-    film.genre = Action;
-    film.realisateur = personne;
-    strcpy(film.titre, "Zora l'exploratrice");
-
-    films[0] = film;
-    personnes[0] = personne;
-    personnes[1] = personne2;
-    nbFilms=1;
-    nbPersonnes=2;
-*/
     loadNbData(&nbFilms, &nbPersonnes);
-    //nbFilms=0;
-    //nbPersonnes=0;
     loadFile(films, personnes, nbFilms, nbPersonnes);
-    //save(films, personnes, nbFilms, nbPersonnes);
 
-    printf("Nombre de Film %d Nombre de Personne %d\n",nbFilms,nbPersonnes);
-    printf("Welcome\n");//Bienvenue
+    printf(" ||====================================================================|| \n");
+    printf(" ||// \\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\// \\\\|| \n");
+    printf(" ||( o )==================|    FILM DATABASE     |================( o )|| \n");
+    printf(" ||\\\\ //                  '------========--------'                \\\\ //|| \n");
+    printf(" ||<< /        /o\\              // ____ \\\\           /o\\           \\ >>|| \n");
+    printf(" ||>>|        //|\\\\            // ///..) \\\\         //|\\\\           |<<|| \n");
+    printf(" ||<<|        \\\\|//           || <||  >\\  ||        \\\\|//           |>>|| \n");
+    printf(" ||>>|         \\o/            ||  \\\\ --/  ||         \\o/            |<<|| \n");
+    printf(" ||<<|                        *\\\\  |\\_/  //*                        |>>|| \n");
+    printf(" ||>>|                         *\\\\/___\\_//*                         |<<|| \n");
+    printf(" ||<<\\                    _____/  WELCOME \\________                 />>|| \n");
+    printf(" ||// \\                 ~|       ENJOY OUR        |~               / \\\\|| \n");
+    printf(" ||( o )===================   AWESOME PROGRAMM   =================( o )|| \n");
+    printf(" ||\\\\ //\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\\\ //|| \n");
+    printf(" ||====================================================================|| \n");
+
     int choix;
     printf("1-Consulter un film\n"
                    "2-Creer un film\n"
-                   "3-Supprimer un film\n");
+                   "3-Supprimer un film\n"
+                   "4-Modifier un film\n");
     scanf("%d",&choix);
     fflush(stdin);
     switch(choix){
@@ -77,6 +59,9 @@ int main() {
             break;
         case 3:
             supprimeFilm(films, nbFilms, nbPersonnes);
+            break;
+        case 4:
+            modifierFilm(films, nbFilms, personnes, nbPersonnes);
             break;
         default:
             break;

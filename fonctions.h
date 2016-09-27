@@ -40,6 +40,8 @@ void afficherActeurs(struct Personne*, int);
 void afficheFilmParActeur(struct Film*,struct Personne*, int,int );
 void afficheFilmParRealisateur(struct Film*,struct Personne*, int,int );
 void supprimeFilm(struct Film *films, int nbFilms, int);
+void afficherTitres(struct Film*, int);
+void modifierFilm(struct Film*, int, struct Personne*, int);
 char* choixGenre();
 struct Personne creerActeur();
 struct Personne consulterActeur(struct Personne*, int);
