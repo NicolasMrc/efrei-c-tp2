@@ -3,17 +3,9 @@
 #include "fonctions.h"
 #include <stdio.h>
 
-char fileFilm[] ="/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt";
-char filePersonne[]="/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt";
-char fileData[]="/Users/Nico/Desktop/EFREI/C C++/TP2/nbData.txt";
-/*
-char fileFilm[] ="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\films.txt";
-char filePersonne[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\personnes.txt";
-char fileData[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\nbData.txt";
-*/
 void afficherFilms(struct Film *films, int nbFilms){
     for(int i = 0; i < nbFilms; i++) {
-        printf("Film [%d]\n",i+1);
+        printf("\nFilm [%d]\n",i+1);
         afficherFilm(films[i]);
     }
 }
@@ -26,8 +18,8 @@ void afficherFilm(struct Film films){
     for (int i = 0; i <films.nbActeur ; ++i) {
         printf("- %s %s\n", films.acteur[i].prenom, films.acteur[i].nom);
     }
-    printf("Durée : %d min\n\n",films.duree);
-
+    printf("Durée : %d min\n",films.duree);
+    printf("Genre : %s \n",films.genre);
 
 }
 void afficherActeurs(struct Personne *personnes, int nbPersonnes){
@@ -43,9 +35,7 @@ void creerFilm(struct Personne *personnes, int nbPersonnes, struct Film *films, 
     struct Film newFilm;
     char titre[30];
     int anneeDeSortie;
-    struct Personne realisateur;
     int nbActeur;
-    struct Personne acteur[3];
     int duree;
     int choixRealisateur;
     int choixActeur;
@@ -124,11 +114,8 @@ void afficheFilmParActeur(struct Film *films,struct Personne *personnes, int nbF
     fflush(stdin);
     for(int i = 0; i < nbFilms; i++) {
         for (int j = 0; j <films[i].nbActeur ; ++j) {
-            if (strcmp(personnes[choixActeur-1].nom, films[i].acteur[j].nom)==0) {//Ne fonctionne pas du au pb des acteurs dans film
+            if (strcmp(personnes[choixActeur-1].nom, films[i].acteur[j].nom)==0) {
                 afficherFilm(films[i]);
-            }
-            else{
-                printf("Pas de film de cette acteur");
             }
         }
     }
@@ -142,9 +129,6 @@ void afficheFilmParRealisateur(struct Film *films,struct Personne *personnes, in
     for(int i = 0; i < nbFilms; i++) {
             if (strcmp(personnes[choixActeur-1].nom, films[i].realisateur.nom)==0) {//Ne fonctionne pas du au pb des acteurs dans film
                 afficherFilm(films[i]);
-            }
-            else{
-                printf("Pas de film de ce realisateur");
             }
 
     }
@@ -172,7 +156,7 @@ char* choixGenre(){
     int choix;
     scanf("%d",&choix);
     fflush(stdin);
-    printf("Genre %s \n",listGenre[choix-1]);
+    printf("\n\n");
     return listGenre[choix-1];
 }
 struct Personne creerActeur(){
@@ -349,10 +333,11 @@ void modifierFilm(struct Film *films,int nbFilms, struct Personne *personnes, in
 
     if (indice >= 0 && indice <= nbFilms){
         printf("Titre : %s \nAnnée de sortie : %d \nDurée : %d \n\n", films[indice].titre, films[indice].anneeDeSortie, films[indice].duree);
-        printf("Que voulez vous modifier ?\n1 - Titre\n2 - Année de sortie\n3 - Durée\n4 - Réalisateur\n5 - Acteurs\n\n");
+        printf("Que voulez vous modifier ?\n1 - Titre\n2 - Année de sortie\n3 - Durée\n4 - Réalisateur\n5 - Acteurs\n6 - Genre\n");
         int choix4;
         scanf("%d", &choix4);
         char newTitre[20];
+
         int newInt, nbActeur, choixActeur, choixRealisateur;
         switch (choix4){
             case 1 :
@@ -409,6 +394,10 @@ void modifierFilm(struct Film *films,int nbFilms, struct Personne *personnes, in
                     }
                 }
 
+                break;
+            case 6:
+                printf("Entrez le nouveau genre du film : \n");
+                films[indice].genre= choixGenre();
                 break;
             default:
                 break;

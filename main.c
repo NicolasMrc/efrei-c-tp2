@@ -1,6 +1,5 @@
 #include "fonctions.h"
 #include <stdio.h>
-#include <string.h>
 
 int main() {
     struct Film films[100];
@@ -55,7 +54,6 @@ int main() {
             break;
         case 2:
             creerFilm(personnes,nbPersonnes,films, nbFilms);
-            afficherFilms(films, nbFilms);
             break;
         case 3:
             supprimeFilm(films, nbFilms, nbPersonnes);
@@ -75,6 +73,7 @@ int main() {
         case 1:
             main();
         default:
+            printf("Aurevoir");
             break;
     }
 }

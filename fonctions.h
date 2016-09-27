@@ -1,3 +1,16 @@
+//---------------------------Variable à modifier pour lire le fichier-------------------///
+//Linux
+/*
+static char fileFilm[] ="/Users/Nico/Desktop/EFREI/C C++/TP2/films.txt";
+static char filePersonne[]="/Users/Nico/Desktop/EFREI/C C++/TP2/personnes.txt";
+static char fileData[]="/Users/Nico/Desktop/EFREI/C C++/TP2/nbData.txt";
+ */
+//Windows
+static char fileFilm[] ="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\films.txt";
+static char filePersonne[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\personnes.txt";
+static char fileData[]="C:\\Users\\ben_s\\ClionProjects\\efrei-c-tp2\\nbData.txt";
+//-------------------------------------------------------------------------------------///
+
 static char *listGenre[] = {
         "Horreur",
         "Comedie",
@@ -21,7 +34,7 @@ typedef struct Film{
     int nbActeur;
     struct Personne acteur[3];
     int duree;
-    char genre;
+    char *genre;
 } Film;
 
 
